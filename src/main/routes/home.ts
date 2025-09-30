@@ -4,6 +4,14 @@ import { Application, Request, Response, Router } from 'express';
 
 const API_BASE = 'http://localhost:4000'; // backend
 
+interface Task {
+  id: string;
+  title: string;
+  description: string;
+  dueDate: string;
+  status: 'PENDING' | 'COMPLETED';
+}
+
 export default function (app: Application): void {
   
   const router = Router();
@@ -20,7 +28,7 @@ export default function (app: Application): void {
       const tasks = response.data;
 
       // Add formatted due date field to each task
-      const processed = tasks.map((task: any) => {
+      const processed = tasks.map((task: Task) => {
         const due = new Date(task.dueDate);
         return {
           ...task,
@@ -30,7 +38,7 @@ export default function (app: Application): void {
       });
 
       // Pass processed tasks into template
-      res.render('tasks.njk', { tasks: processed, minDateTime: minDateTime });
+      res.render('tasks.njk', { tasks: processed, minDateTime });
     } catch (error) {
       console.error('Error making request:', error);
       res.status(500).send('Error fetching tasks');
