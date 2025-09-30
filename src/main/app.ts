@@ -25,10 +25,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use((req, res, next) => {
-  // res.setHeader(
-  //   'Content-Security-Policy',
-  //   "default-src 'self'; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline';"
-  // );
+ 
   res.setHeader('Cache-Control', 'no-cache, max-age=0, must-revalidate, no-store');
   next();
 });
@@ -41,7 +38,7 @@ glob
 setupDev(app, developmentMode);
 
 // error handler
-app.use((err: HTTPError, req: express.Request, res: express.Response,next: express.NextFunction) => {
+app.use((err: HTTPError, req: express.Request, res: express.Response) => {
   console.log(err);
   // set locals, only providing error in development
   res.locals.message = err.message;
