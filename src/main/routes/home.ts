@@ -5,9 +5,11 @@ import { Application, Request, Response, Router } from 'express';
 const API_BASE = 'http://localhost:4000'; // backend
 
 export default function (app: Application): void {
+  
   const router = Router();
   app.use('/', router);
 
+  // Get tasks
   router.get('/tasks', async (req: Request, res: Response) => {
     try {
       const now = new Date();
@@ -17,7 +19,7 @@ export default function (app: Application): void {
       const response = await axios.get(`${API_BASE}/tasks`);
       const tasks = response.data;
 
-      // Add formatted due date field
+      // Add formatted due date field to each task
       const processed = tasks.map((task: any) => {
         const due = new Date(task.dueDate);
         return {
