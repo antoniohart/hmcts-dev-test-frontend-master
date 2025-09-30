@@ -17,7 +17,7 @@
     "test:coverage": "jest --coverage",
     "test:routes": "jest -c jest.routes.config.js",
     "test:functional": "NODE_TLS_REJECT_UNAUTHORIZED=0 codeceptjs run --steps",
-    "cichecks": "yarn install && yarn build && yarn rebuild puppeteer && yarn lint && yarn test && yarn test:routes && yarn test:a11y",
+    "cichecks": "yarn install && yarn build && yarn rebuild puppeteer && yarn lint && yarn test && yarn test:routes",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -91,8 +91,10 @@
     "jest-html-reporter": "^3.10.1",
     "lint-staged": "^15.0.0",
     "mini-css-extract-plugin": "^2.7.6",
-    "nock": "^13.3.2",
+    "nock": "^14.0.10",
     "nodemon": "^3.0.0",
+    "pa11y": "^9.0.1",
+    "pa11y-ci": "^4.0.1",
     "playwright": "^1.36.2",
     "prettier": "^3.0.0",
     "request": "^2.88.2",
