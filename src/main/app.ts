@@ -25,7 +25,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use((req, res, next) => {
- 
   res.setHeader('Cache-Control', 'no-cache, max-age=0, must-revalidate, no-store');
   next();
 });

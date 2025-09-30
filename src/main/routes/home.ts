@@ -4,7 +4,6 @@ import { Application, Request, Response, Router } from 'express';
 
 const API_BASE = 'http://localhost:4000'; // backend
 
-
 interface Task {
   id: string;
   title: string;
@@ -14,7 +13,6 @@ interface Task {
 }
 
 export default function (app: Application): void {
-  
   const router = Router();
   app.use('/', router);
 
@@ -33,8 +31,7 @@ export default function (app: Application): void {
         const due = new Date(task.dueDate);
         return {
           ...task,
-          dueFormatted:
-            due > now ? format(due, 'dd MMM yyyy HH:mm') : 'Overdue'
+          dueFormatted: due > now ? format(due, 'dd MMM yyyy HH:mm') : 'Overdue',
         };
       });
 
