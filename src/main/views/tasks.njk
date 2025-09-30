@@ -1,0 +1,86 @@
+{# {% extends "layout.njk" %} #}
+{% extends "template.njk" %}
+
+{% block content %}
+    <div class="govuk-width-container">
+        <main class="govuk-main-wrapper" id="main-content" role="main">
+            <h1 class="govuk-heading-l">Task Manager</h1>
+
+            <!-- Create Task Form -->
+            <form action="/tasks/create" method="POST" class="govuk-form-group">
+                <div class="govuk-form-group">
+                    <label class="govuk-label" for="title">Title</label>
+                    <input class="govuk-input" id="title" name="title" type="text" required="required">
+                </div>
+
+                <div class="govuk-form-group">
+                    <label class="govuk-label" for="description">Description</label>
+                    <textarea class="govuk-textarea" id="description" name="description"></textarea>
+                </div>
+
+                <div class="govuk-form-group">
+                    <label class="govuk-label" for="dueDate">Due date and time</label>
+                    <input class="govuk-input" id="dueDate" name="dueDate" type="datetime-local"   min="{{ minDateTime }}"
+                           value="{{ minDateTime }}"  required="required">
+                </div>
+
+                <button class="govuk-button" data-module="govuk-button">Add task</button>
+            </form>
+
+            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+            <!-- Task List -->
+            {% if tasks.length > 0 %}
+                <h2 class="govuk-heading-m">Your tasks</h2>
+                <ul class="govuk-list govuk-list--spaced">
+                    {% for task in tasks %}
+                        <li class="govuk-!-margin-bottom-6">
+                            <h3 class="govuk-heading-s">
+                                {{ task.title }}
+                            </h3>
+                            <p class="govuk-body">
+                                Due:
+                                {{ task.dueFormatted or "No due date set" }} 
+                                |
+                                <strong>Case Number:</strong>
+                                {{ task.caseNumber or "N/A" }}
+                            </p>
+                            <p class="govuk-body">{{ task.description or "No description provided." }}</p>
+
+
+                            {% if task.status === 'COMPLETED' %}
+                                <strong class="govuk-tag govuk-tag--green govuk-!-margin-bottom-2">
+                                    {{ task.status }}
+                                </strong>
+                            {% else %}
+                                <strong class="govuk-tag govuk-!-margin-bottom-2">
+                                    {{ task.status }}
+                                </strong>
+                            {% endif %}
+
+                            <div class="govuk-button-group">
+                                <form action="/tasks/{{ task.id }}/status" method="POST">
+
+                                    <input type="hidden" name="status" value="{{ 'PENDING' if task.status == 'COMPLETED' else 'COMPLETED' }}"/>
+                                    <button type="submit" class="govuk-button govuk-button--secondary">
+
+                                        Mark as
+                                        {{ 'Pending' if task.status == 'COMPLETED' else 'Completed' }}
+                                    </button>
+                                </form>
+
+                                <form action="/tasks/{{ task.id }}/delete" method="POST">
+                                    <button type="submit" class="govuk-button govuk-button--warning">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="govuk-body">No tasks found. Add your first task above.</p>
+            {% endif %}
+        </main>
+    </div>
+{% endblock %}
